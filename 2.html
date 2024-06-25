@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Caffeine Visualization</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #fff;
+            color: #333;
+            font-family: Arial, sans-serif;
+        }
+        .visualization-container {
+            display: flex;
+            align-items: center;
+        }
+        .arrow {
+            cursor: pointer;
+            font-size: 50px;
+            margin: 0 20px;
+        }
+        .item {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .item img {
+            width:150px; /* Consistent width for beverage images */
+        }
+        .equal-sign {
+            font-size: 50px;
+            margin: 0 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="visualization-container">
+        <div id="left-arrow" class="arrow">&#8592;</div>
+        <div id="visualization" class="item"></div>
+        <div id="right-arrow" class="arrow">&#8594;</div>
+    </div>
+
+    <script>
+        const data = [
+        {
+          drink: "Monster Energy 16 oz",
+          caffeine: 160,
+          equivalent: 1.066667,
+          pic_link:
+            "https://www.caffeineinformer.com/wp-content/caffeine/monster.jpg",
+        },
+        {
+          drink: "Celsius Energy Drink 12 oz",
+          caffeine: 200,
+          equivalent: 1.333333,
+          pic_link:
+            "https://www.caffeineinformer.com/wp-content/caffeine/celsius-energy-drink.jpg",
+        },
+        {
+          drink: "C4 Smart Energy Drink 16 oz",
+          caffeine: 200,
+          equivalent: 1.333333,
+          pic_link:
+            "https://www.caffeineinformer.com/wp-content/caffeine/c4-smart-energy.jpg",
+        },
+        {
+          drink: "Bang Energy",
+          caffeine: 300,
+          equivalent: 2,
+          pic_link:
+            "https://www.caffeineinformer.com/wp-content/caffeine/bang-energy-drink.jpg",
+        },
+        {
+          drink: "Celsius Energy Drink 12 oz",
+          caffeine: 200,
+          equivalent: 1.333333,
+          pic_link:
+            "https://www.caffeineinformer.com/wp-content/caffeine/celsius-energy-drink.jpg",
+        },
+        {
+          drink: "Panera Charged Lemonade 30 oz",
+          caffeine: 390,
+          equivalent: 2.6,
+          pic_link:
+            "https://www.caffeineinformer.com/wp-content/caffeine/charged-lemonade.jpg",
+        },
+        {
+          drink: "Mountain Dew 12 oz",
+          caffeine: 54,
+          equivalent: 0.36,
+          pic_link:
+            "https://www.caffeineinformer.com/wp-content/caffeine/mountain-dew.jpg",
+        },
+        {
+          drink: "Diet Coke 12 oz",
+          caffeine: 46,
+          equivalent: 0.3,
+          pic_link:
+            "https://www.caffeineinformer.com/wp-content/caffeine/diet-coke.jpg",
+        },
+        {
+          drink: "Starbucks Refreshers Canned 12 oz",
+          caffeine: 50,
+          equivalent: 0.36,
+          pic_link:
+            "https://www.caffeineinformer.com/wp-content/caffeine/starbucks-refreshers.jpg",
+        },
+        {
+          drink: "Dr Pepper 12 oz",
+          caffeine: 42,
+          equivalent: 0.28,
+          pic_link:
+            "https://www.caffeineinformer.com/wp-content/caffeine/dr-pepper.jpg",
+        },
+        {
+          drink: "Sunkist Orange Soda",
+          caffeine: 19,
+          equivalent: 0.13,
+          pic_link:
+            "https://www.caffeineinformer.com/wp-content/caffeine/sunkist-orange-soda.jpg",
+        },
+        ];
+
+        const coffeeCupImages = {
+            "0.1": "0.1.png",
+            "0.3": "0.3.png",
+            "1": "1.png",
+            "1.3": "1.3.png",
+            "2": "2.png",
+            "2.5": "2.5.png"
+        };
+
+        let currentIndex = 0;
+
+        const container = d3.select("#visualization");
+
+        function updateVisualization(index) {
+            container.html("");
+
+            const item = data[index];
+
+            container.append("img").attr("src", item.pic_link);
+            container.append("div").text(item.drink);
+            container.append("div").text(`${item.caffeine} mg`);
+
+            container.append("div").attr("class", "equal-sign").text("≈");
+
+            const equivalentCups = Math.round(item.equivalent * 10) / 10;
+            let coffeeImage;
+            if (equivalentCups <= 0.1) {
+                coffeeImage = coffeeCupImages["0.1"];
+            } else if (equivalentCups <= 0.3) {
+                coffeeImage = coffeeCupImages["0.3"];
+            } else if (equivalentCups <= 1) {
+                coffeeImage = coffeeCupImages["1"];
+            } else if (equivalentCups <= 1.3) {
+                coffeeImage = coffeeCupImages["1.3"];
+            } else if (equivalentCups <= 2) {
+                coffeeImage = coffeeCupImages["2"];
+            } else {
+                coffeeImage = coffeeCupImages["2.5"];
+            }
+
+            container.append("img").attr("src", coffeeImage);
+        }
+
+        d3.select("#left-arrow").on("click", () => {
+            currentIndex = (currentIndex - 1 + data.length) % data.length;
+            updateVisualization(currentIndex);
+        });
+
+        d3.select("#right-arrow").on("click", () => {
+            currentIndex = (currentIndex + 1) % data.length;
+            updateVisualization(currentIndex);
+        });
+
+        // Initial render
+        updateVisualization(currentIndex);
+    </script>
+</body>
+</html>

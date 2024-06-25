@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Caffeine Visualization</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+      .container {
+        display: flex;
+        overflow-x: auto;
+      }
+      .item {
+        margin-right: 20px;
+        text-align: center;
+      }
+      .item img {
+        width: 100px;
+      }
+      .equal-sign {
+        font-size: 50px;
+        margin: 0 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="visualization" class="container"></div>
+
+    <script>
+      const data = [
+        {
+          drink: "Monster Energy 16 oz",
+          caffeine: 160,
+          equivalent: 1.066667,
+          pic_link:
+            "https://www.caffeineinformer.com/wp-content/caffeine/monster-energy.jpg",
+        },
+        {
+          drink: "Celsius Energy Drink 12 oz",
+          caffeine: 200,
+          equivalent: 1.333333,
+          pic_link:
+            "https://www.caffeineinformer.com/wp-content/caffeine/celsius-energy-drink.jpg",
+        },
+        {
+          drink: "C4 Smart Energy Drink 16 oz",
+          caffeine: 200,
+          equivalent: 1.333333,
+          pic_link:
+            "https://www.caffeineinformer.com/wp-content/caffeine/c4-smart-energy.jpg",
+        },
+        {
+          drink: "Bang Energy",
+          caffeine: 300,
+          equivalent: 2,
+          pic_link:
+            "https://www.caffeineinformer.com/wp-content/caffeine/bang-energy-drink.jpg",
+        },
+        {
+          drink: "Celsius Energy Drink 12 oz",
+          caffeine: 200,
+          equivalent: 1.333333,
+          pic_link:
+            "https://www.caffeineinformer.com/wp-content/caffeine/celsius-energy-drink.jpg",
+        },
+        {
+          drink: "Panera Charged Lemonade 30 oz",
+          caffeine: 390,
+          equivalent: 2.6,
+          pic_link:
+            "https://www.caffeineinformer.com/wp-content/caffeine/charged-lemonade.jpg",
+        },
+        {
+          drink: "Mountain Dew 12 oz",
+          caffeine: 54,
+          equivalent: 0.36,
+          pic_link:
+            "https://www.caffeineinformer.com/wp-content/caffeine/mountain-dew.jpg",
+        },
+        {
+          drink: "Diet Coke 12 oz",
+          caffeine: 46,
+          equivalent: 0.3,
+          pic_link:
+            "https://www.caffeineinformer.com/wp-content/caffeine/diet-coke.jpg",
+        },
+        {
+          drink: "Starbucks Refreshers Canned 12 oz",
+          caffeine: 50,
+          equivalent: 0.36,
+          pic_link:
+            "https://www.caffeineinformer.com/wp-content/caffeine/starbucks-refreshers.jpg",
+        },
+        {
+          drink: "Dr Pepper 12 oz",
+          caffeine: 42,
+          equivalent: 0.28,
+          pic_link:
+            "https://www.caffeineinformer.com/wp-content/caffeine/dr-pepper.jpg",
+        },
+        {
+          drink: "Sunkist Orange Soda",
+          caffeine: 19,
+          equivalent: 0.13,
+          pic_link:
+            "https://www.caffeineinformer.com/wp-content/caffeine/sunkist-orange-soda.jpg",
+        },
+      ];
+
+      const coffeeCupImages = {
+        0.1: "path/to/0.1cup.jpg",
+        0.3: "path/to/0.3cup.jpg",
+        1: "path/to/1cup.jpg",
+        2: "path/to/2cups.jpg",
+        2.5: "path/to/2.5cups.jpg",
+      };
+
+      const container = d3.select("#visualization");
+
+      data.forEach((item) => {
+        const itemDiv = container.append("div").attr("class", "item");
+
+        itemDiv.append("img").attr("src", item.pic_link);
+        itemDiv.append("div").text(item.drink);
+        itemDiv.append("div").text(`${item.caffeine} mg`);
+
+        const equalSign = itemDiv
+          .append("div")
+          .attr("class", "equal-sign")
+          .text("=");
+
+        const equivalentCups = Math.round(item.equivalent * 10) / 10;
+        let coffeeImage;
+        if (equivalentCups <= 0.1) {
+          coffeeImage = coffeeCupImages["0.1"];
+        } else if (equivalentCups <= 0.3) {
+          coffeeImage = coffeeCupImages["0.3"];
+        } else if (equivalentCups <= 1) {
+          coffeeImage = coffeeCupImages["1"];
+        } else if (equivalentCups <= 2) {
+          coffeeImage = coffeeCupImages["2"];
+        } else {
+          coffeeImage = coffeeCupImages["2.5"];
+        }
+
+        itemDiv.append("img").attr("src", coffeeImage);
+      });
+    </script>
+  </body>
+</html>
